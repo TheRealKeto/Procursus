@@ -1,0 +1,10 @@
+Package: mesu
+Version: @DEB_MESU_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Siguza
+Section: Utilities
+Priority: optional
+Tag: purpose::console role::developer
+Description: Apple OTA update plist parser
+    Parses an Apple OTA update plist and prints it nicely!
