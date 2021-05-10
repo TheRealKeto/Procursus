@@ -1,0 +1,13 @@
+Package: sapling
+Version: @DEB_SAPLING_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Ben White-Home (kneasle)
+Section: Text_Editors
+Priority: optional
+Homepage: https://www.github.com/kneasle/sapling
+Description: Edit code, not text.
+ Sapling is a highly experimental, vi-inspired editor where you edit code, not text, while
+ providing a feature-rich, stable experience. The goals of Sapling are mainly attributed to
+ the use of AST (Abstract Syntax Tree). At its core, AST is a tree-like strcuture representation
+ of a program, without details about formatting.
