@@ -7,7 +7,9 @@ Section: Text_Editors
 Priority: optional
 Homepage: https://www.github.com/kneasle/sapling
 Description: Edit code, not text.
- Sapling is a highly experimental, vi-inspired editor where you edit code, not text, while
- providing a feature-rich, stable experience. The goals of Sapling are mainly attributed to
- the use of AST (Abstract Syntax Tree). At its core, AST is a tree-like strcuture representation
- of a program, without details about formatting.
+ Sapling is a highly experimental, vi-inspired editor where
+ you edit code, not text. Sapling provides a feature-rich, stable
+ experience, while attributing to other goals through the usage
+ of AST (Abstract Syntax Tree). At its core, AST is a tree-like
+ strcuture representation of a program, without details about
+ formatting.

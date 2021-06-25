@@ -15,7 +15,7 @@ sapling:
 	@echo "Using previously built sapling."
 else
 sapling: sapling-setup
-	cd $(BUILD_WORK)/sapling && SDKROOT="$(TARGET_SYSROOT)" cargo build \
+	cd $(BUILD_WORK)/sapling && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
 	$(GINSTALL) -Dm755 $(BUILD_WORK)/sapling/target/$(RUST_TARGET)/release/sapling \
