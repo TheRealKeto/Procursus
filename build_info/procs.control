@@ -1,0 +1,15 @@
+Package: procs
+Version: @DEB_PROCS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: dalance <dalance@gmail.com>
+Section: Administration
+Priority: optional
+Homepage: https://github.com/dalance/procs
+Description: A modern replacement for ps in Rust.
+ Procs is a replacement for ps written in Rust. It provides
+ colored output in a human-readable format, while also
+ providing other information about a specific process. On
+ top of that, it utilizes your native pager on your system
+ and a tree view, making it easier to find what you're looking
+ for.
