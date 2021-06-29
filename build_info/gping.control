@@ -1,0 +1,9 @@
+Package: gping
+Version: @DEB_GPING_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Author: Tom Forbes <tom@tomforb.es>
+Section: Networking
+Priority: optional
+Homepage: https://github.com/orf/gping
+Description: Ping, but with a graph.
