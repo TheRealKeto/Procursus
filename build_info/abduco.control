@@ -4,6 +4,9 @@ Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Utilities
 Priority: optional
+Homepage: https://github.com/martanne/abduco
 Description: Session management CLI.
- abduco is a session management CLI which allows programs to run independently
- in the background, replacing terminal multiplexer alternatives such as tmux and Screen.
+ abduco is a session management CLI which allows
+ programs to run independently in the background,
+ replacing terminal multiplexer alternatives, such
+ as tmux and Screen.
