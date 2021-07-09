@@ -1,0 +1,13 @@
+Package: dvtm
+Version: @DEB_DVTM_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Section: Utilities
+Priority: optional
+Depends: libncursesw6
+Homepage: https://www.brain-dump.org/projects/dvtm
+Description: Tiling window management for the console.
+ dvtm (dynamic virtual terminal manager) brings dwm and
+ its concept of tiling window management to the console.
+ As a console window manager, it tries to make it easy to
+ work with multiple console based programs.
