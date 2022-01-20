@@ -1,5 +1,5 @@
 Package: aspell-en
-Version: @DEB_ASPELL-EN_V@
+Version: @DEB_ASPELL_EN_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Dictionary
