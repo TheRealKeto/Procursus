@@ -7,7 +7,8 @@ ASPELL_VERSION  := 0.60.8
 DEB_ASPELL_V    ?= $(ASPELL_VERSION)
 
 aspell-setup: setup
-	wget -q -nc -P $(BUILD_SOURCE) https://ftp.gnu.org/gnu/aspell/aspell-$(ASPELL_VERSION).tar.gz
+	wget -q -nc -P $(BUILD_SOURCE) https://ftp.gnu.org/gnu/aspell/aspell-$(ASPELL_VERSION).tar.gz{,.sig}
+	$(call PGP_VERIFY,aspell-$(ASPELL_VERSION).tar.gz)
 	$(call EXTRACT_TAR,aspell-$(ASPELL_VERSION).tar.gz,aspell-$(ASPELL_VERSION),aspell)
 
 ifneq ($(wildcard $(BUILD_WORK)/aspell/.build_complete),)
@@ -25,30 +26,30 @@ aspell: aspell-setup ncurses
 endif
 
 aspell-package: aspell-stage
-# aspell.mk Package Structure
+	# aspell.mk Package Structure
 	rm -rf $(BUILD_DIST)/{aspell,libaspell-dev,libaspell15,libpspell-dev}
 	mkdir -p $(BUILD_DIST)/aspell/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin \
 		$(BUILD_DIST)/libaspell-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include} \
 		$(BUILD_DIST)/libaspell15/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/aspell-0.60} \
 		$(BUILD_DIST)/libpspell-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{lib,include/pspell,bin}
 
-# aspell.mk Prep aspell
+	# aspell.mk Prep aspell
 	cp -a $(BUILD_STAGE)/aspell/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/!(pspell-config) \
 		$(BUILD_DIST)/aspell/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 
-# aspell.mk Prep aspell-dev
+	# aspell.mk Prep aspell-dev
 	cp -a $(BUILD_STAGE)/aspell/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/aspell.h \
 		$(BUILD_DIST)/libaspell-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	cp -a $(BUILD_STAGE)/aspell/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libaspell.la \
 		$(BUILD_DIST)/libaspell-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-# aspell.mk Prep libaspell15
+	# aspell.mk Prep libaspell15
 	cp -a $(BUILD_STAGE)/aspell/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/aspell-0.60 \
 		$(BUILD_DIST)/libaspell15/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/aspell-0.60
 	cp -a $(BUILD_STAGE)/aspell/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libaspell.dylib,libaspell.15.dylib} \
 		$(BUILD_DIST)/libaspell15/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-# aspell.mk Prep libpspell-dev
+	# aspell.mk Prep libpspell-dev
 	cp -a $(BUILD_STAGE)/aspell/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include/pspell/pspell.h \
 		$(BUILD_DIST)/libpspell-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	cp -a $(BUILD_STAGE)/aspell/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin/pspell-config \
@@ -56,19 +57,19 @@ aspell-package: aspell-stage
 	cp -a $(BUILD_STAGE)/aspell/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libpspell.la,libpspell.dylib,libpspell.15.dylib} \
 		$(BUILD_DIST)/libpspell-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
-# aspell.mk Sign
+	# aspell.mk Sign
 	$(call SIGN,aspell,general.xml)
 	$(call SIGN,libaspell-dev,general.xml)
 	$(call SIGN,libaspell15,general.xml)
 	$(call SIGN,libpspell-dev,general.xml)
 
-# aspell.mk Make .debs
+	# aspell.mk Make .debs
 	$(call PACK,aspell,DEB_ASPELL_V)
 	$(call PACK,libaspell-dev,DEB_ASPELL_V)
 	$(call PACK,libaspell15,DEB_ASPELL_V)
 	$(call PACK,libpspell-dev,DEB_ASPELL_V)
 
-# aspell.mk Build cleanup
+	# aspell.mk Build cleanup
 	rm -rf $(BUILD_DIST)/{aspell,libaspell-dev,libaspell15,libpspell-dev}
 
 .PHONY: aspell aspell-package
