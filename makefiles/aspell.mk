@@ -4,11 +4,17 @@ endif
 
 SUBPROJECTS     += aspell
 ASPELL_VERSION  := 0.60.8
+ASPELL_DATE     := 2020.12.07-0
+
+DEB_ASPELL_EN_V ?= $(ASPELL_DATE)
 DEB_ASPELL_V    ?= $(ASPELL_VERSION)
 
 aspell-setup: setup
 	wget -q -nc -P $(BUILD_SOURCE) https://ftp.gnu.org/gnu/aspell/aspell-$(ASPELL_VERSION).tar.gz{,.sig}
+	wget -q -nc -P $(BUILD_SOURCE) https://ftpmirror.gnu.org/aspell/dict/en/aspell6-en-$(ASPELL_DATE).tar.bz2{,.sig}
 	$(call PGP_VERIFY,aspell-$(ASPELL_VERSION).tar.gz)
+	$(call PGP_VERIFY,aspell6-en-$(ASPELL_DATE).tar.bz2)
+	$(call EXTRACT_TAR,aspell6-en-$(ASPELL_DATE).tar.bz2,aspell6-en-$(aspell6),aspell-en)
 	$(call EXTRACT_TAR,aspell-$(ASPELL_VERSION).tar.gz,aspell-$(ASPELL_VERSION),aspell)
 
 ifneq ($(wildcard $(BUILD_WORK)/aspell/.build_complete),)
@@ -16,8 +22,14 @@ aspell:
 	@echo "Using previously built aspell."
 else
 aspell: aspell-setup ncurses
+	cd $(BUILD_WORK)/aspell-en && ./configure -C \
+		$(DEFAULT_CONFIGURE_FLAGS)
+	+$(MAKE) -C $(BUILD_WORK)/aspell-en
+	+$(MAKE) -C $(BUILD_WORK)/aspell-en install \
+		DESTDIR="$(BUILD_STAGE)/aspell-en"
 	cd $(BUILD_WORK)/aspell && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		--lang=en \
 		--disable-rpath
 	+$(MAKE) -C $(BUILD_WORK)/aspell
 	+$(MAKE) -C $(BUILD_WORK)/aspell install \
@@ -57,6 +69,10 @@ aspell-package: aspell-stage
 	cp -a $(BUILD_STAGE)/aspell/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/{libpspell.la,libpspell.dylib,libpspell.15.dylib} \
 		$(BUILD_DIST)/libpspell-dev/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib
 
+	# aspell Dictionary Prep
+	rm -rf $(BUILD_DIST)/aspell-en
+	cp -a $(BUILD_STAGE)/aspell-en $(BUILD_DIST)
+
 	# aspell.mk Sign
 	$(call SIGN,aspell,general.xml)
 	$(call SIGN,libaspell-dev,general.xml)
@@ -68,8 +84,10 @@ aspell-package: aspell-stage
 	$(call PACK,libaspell-dev,DEB_ASPELL_V)
 	$(call PACK,libaspell15,DEB_ASPELL_V)
 	$(call PACK,libpspell-dev,DEB_ASPELL_V)
+	$(call PACK,aspell-en,DEB_ASPELL_EN_V)
 
 	# aspell.mk Build cleanup
+	rm -rf $(BUILD_DIST)/aspell-en
 	rm -rf $(BUILD_DIST)/{aspell,libaspell-dev,libaspell15,libpspell-dev}
 
 .PHONY: aspell aspell-package
