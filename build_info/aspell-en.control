@@ -3,5 +3,6 @@ Version: @DEB_ASPELL_EN_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Section: Dictionary
+Provides: aspell-dictionary
 Priority: optional
 Description: English dictionary for GNU Aspell

@@ -3,6 +3,7 @@ Version: @DEB_ASPELL_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Depends: libaspell15 (= @DEB_ASPELL_V@), libncursesw6
+Recommends: aspell-en | aspell-dictionary
 Provides: aspell-bin
 Section: Utilities
 Priority: optional
