@@ -1,0 +1,65 @@
+From 144308baf38c27f27efdfad723afd5d94337a870 Mon Sep 17 00:00:00 2001
+From: TheRealKeto <therealketo@gmail.com>
+Date: Thu, 14 Apr 2022 17:18:47 -0400
+Subject: [PATCH] Correctly disable manpage compression
+
+This patch should correctly disable manpage
+compression when installing faketime's manpage.
+
+The initial diff that was used only removed the
+compression for Linux users (which is not the
+Makefile that's used by OSX, or Darwin).
+
+Signed-off-by: TheRealKeto <therealketo@gmail.com>
+---
+ man/Makefile     | 6 ++----
+ man/Makefile.OSX | 9 +++------
+ 2 files changed, 5 insertions(+), 10 deletions(-)
+
+diff --git a/man/Makefile b/man/Makefile
+index 2e47b6d..6df646c 100644
+--- a/man/Makefile
++++ b/man/Makefile
+@@ -1,14 +1,12 @@
+ INSTALL ?= install
+-
+-PREFIX ?= /usr/local
++PREFIX  ?= /usr/local
+ 
+ all:
+ 
+ install:
+ 	$(INSTALL) -Dm0644 faketime.1 "${DESTDIR}${PREFIX}/share/man/man1/faketime.1"
+-	gzip -nf "${DESTDIR}${PREFIX}/share/man/man1/faketime.1"
+ 
+ uninstall:
+-	rm -f "${DESTDIR}${PREFIX}/share/man/man1/faketime.1.gz"
++	rm -f "${DESTDIR}${PREFIX}/share/man/man1/faketime.1"
+ 
+ .PHONY: all install uninstall
+diff --git a/man/Makefile.OSX b/man/Makefile.OSX
+index 5451acd..6df646c 100644
+--- a/man/Makefile.OSX
++++ b/man/Makefile.OSX
+@@ -1,15 +1,12 @@
+ INSTALL ?= install
+-
+-PREFIX ?= /usr/local
++PREFIX  ?= /usr/local
+ 
+ all:
+ 
+ install:
+-	$(INSTALL) -dm0755 "${DESTDIR}${PREFIX}/share/man/man1"
+-	$(INSTALL) -m0644 faketime.1 "${DESTDIR}${PREFIX}/share/man/man1/faketime.1"
+-	gzip -f "${DESTDIR}${PREFIX}/share/man/man1/faketime.1"
++	$(INSTALL) -Dm0644 faketime.1 "${DESTDIR}${PREFIX}/share/man/man1/faketime.1"
+ 
+ uninstall:
+-	rm -f "${DESTDIR}${PREFIX}/share/man/man1/faketime.1.gz"
++	rm -f "${DESTDIR}${PREFIX}/share/man/man1/faketime.1"
+ 
+ .PHONY: all install uninstall
+-- 
+2.34.1
+
