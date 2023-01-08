@@ -10,6 +10,8 @@ emacs-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://ftpmirror.gnu.org/emacs/emacs-$(EMACS_VERSION).tar.xz{$(comma).sig})
 	$(call PGP_VERIFY,emacs-$(EMACS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,emacs-$(EMACS_VERSION).tar.xz,emacs-$(EMACS_VERSION),emacs)
+	sed -e "71d" -i $(BUILD_WORK)/emacs/nextstep/Makefile.in
+	sed -e "250s|/.*|/lisp:../lisp|" -i $(BUILD_WORK)/emacs/Makefile.in
 	mkdir -p $(BUILD_WORK)/emacs/native-build
 
 ifneq ($(wildcard $(BUILD_WORK)/emacs/.build_complete),)
