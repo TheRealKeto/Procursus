@@ -44,7 +44,13 @@ emacs: emacs-setup libx11 libxau libxmu libxpm libpng16 libgif libtiff xorgproto
 		--with-dumping=none \
 		--with-x-toolkit=no \
 		--x-libraries="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
-		--x-includes="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include"
+		--x-includes="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
+		gl_cv_func_open_slash=no \
+		gl_cv_func_working_utimes=yes \
+		ac_cv_func_getgroups_works=yes \
+		ac_cv_func_mmap_fixed_mapped=yes \
+		fu_cv_sys_stat_statfs2_bsize=yes \
+		gl_cv_func_gettimeofday_clobbe=no
 	+$(MAKE) -C $(BUILD_WORK)/emacs
 	+$(MAKE) -C $(BUILD_WORK)/emacs install \
 		DESTDIR="$(BUILD_STAGE)/emacs"
