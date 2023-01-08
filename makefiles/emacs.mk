@@ -15,7 +15,7 @@ ifneq ($(wildcard $(BUILD_WORK)/emacs/.build_complete),)
 emacs:
 	@echo "Using previously built emacs."
 else
-emacs: emacs-setup
+emacs: emacs-setup libx11 libxau libxmu xorgproto xxhash
 	cd $(BUILD_WORK)/emacs && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS)
 	+$(MAKE) -C $(BUILD_WORK)/emacs
