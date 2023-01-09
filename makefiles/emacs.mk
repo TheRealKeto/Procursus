@@ -18,7 +18,7 @@ ifneq ($(wildcard $(BUILD_WORK)/emacs/.build_complete),)
 emacs:
 	@echo "Using previously built emacs."
 else
-emacs: emacs-setup libx11 libxau libxmu libxpm libpng16 libgif libtiff xorgproto xxhash
+emacs: emacs-setup jansson libxml2 libx11 libxau libxmu libxpm libpng16 libgif libtiff lcms2 xorgproto xxhash
 	cd $(BUILD_WORK)/emacs/native-build && ../configure \
 		$(BUILD_CONFIGURE_FLAGS) \
 		--without-x \
@@ -29,20 +29,26 @@ emacs: emacs-setup libx11 libxau libxmu libxpm libpng16 libgif libtiff xorgproto
 	+$(MAKE) -C $(BUILD_WORK)/emacs/native-build
 	cd $(BUILD_WORK)/emacs && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
+		--with-xpn \
+		--with-png \
+		--with-gif \
+		--with-tiff \
+		--with-json \
 		--without-ns \
+		--without-pop \
 		--with-modules \
 		--without-dbus \
-		--with-xpn=yes \
-		--with-png=yes \
-		--with-gif=yes \
 		--without-jpeg \
-		--with-tiff=yes \
-		--with-unexec=no \
+		--without-rsvg \
+		--with-pdumper \
+		--without-cairo \
 		--without-gnutls \
+		--with-unexec=no \
 		--without-makeinfo \
-		--with-pdumper=yes \
 		--with-dumping=none \
 		--with-x-toolkit=no \
+		--without-libsystemd \
+		--without-compress-install \
 		--x-libraries="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
 		--x-includes="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
 		gl_cv_func_open_slash=no \
@@ -72,7 +78,7 @@ emacs-package: emacs-stage
 	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/icons $(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
 	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/metainfo $(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/metainfo
 	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/info/efaq.info.gz \
+	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/info/efaq.info \
 		$(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/info
 
 	# emacs.mk Prep emacs-el
