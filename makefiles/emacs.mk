@@ -59,18 +59,35 @@ endif
 
 emacs-package: emacs-stage
 	# emacs.mk Package Structure
-	rm -rf $(BUILD_DIST)/emacs
+	rm -rf $(BUILD_DIST)/emacs{-el,-bin-common,-common}
+	mkdir -p $(BUILD_DIST)/emacs{-bin-common,-common}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(BUILD_DIST)/emacs-el/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/emacs/$(EMACS_VERSION) \
+		$(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share/info}
 
-	# emacs.mk Prep emacs
-	cp -a $(BUILD_STAGE)/emacs $(BUILD_DIST)
+	# emacs.mk Prep emacs-bin-common
+	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,libexec} $(BUILD_DIST)/emacs-bin-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
+
+	# emacs.mk Prep emacs-common
+	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{man,applications} $(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
+	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/icons $(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
+	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/metainfo $(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/metainfo
+	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
+	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/info/efaq.info.gz \
+		$(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/info
+
+	# emacs.mk Prep emacs-el
+	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/emacs/$(EMACS_VERSION)/lisp $(BUILD_DIST)/emacs-el/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/emacs/$(EMACS_VERSION)
 
 	# emacs.mk Sign
-	$(call SIGN,emacs,general.xml)
+	$(call SIGN,emacs-bin-common,general.xml)
 
 	# emacs.mk Make .debs
 	$(call PACK,emacs,DEB_EMACS_V)
+	$(call PACK,emacs-el,DEB_EMACS_V)
+	$(call PACK,emacs-common,DEB_EMACS_V)
+	$(call PACK,emacs-bin-common,DEB_EMACS_V)
 
 	# emacs.mk Build cleanup
-	rm -rf $(BUILD_DIST)/emacs
+	rm -rf $(BUILD_DIST)/emacs{-el,-bin-common,-common}
 
 .PHONY: emacs emacs-package

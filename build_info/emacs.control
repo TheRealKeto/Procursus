@@ -1,9 +1,10 @@
 Package: emacs
 Version: @DEB_EMACS_V@
-Architecture: @DEB_ARCH@
+Architecture: all
 Maintainer: @DEB_MAINTAINER@
-Depends: libx11-6, libxau6, libxmu6, libxpm-dev, libpng16-dev, libgif-dev, libtiff-dev, x11proto-dev, xxhash
+Depends: emacs-bin-common, emacs-common
+Suggests: emacs-el
 Section: Text_Editors
 Priority: optional
 Homepage: https://www.gnu.org/software/emacs/
-Description: the extensible, customizable, self-documenting editor.
+Description: the extensible, customizable, self-documenting editor (metapackage)

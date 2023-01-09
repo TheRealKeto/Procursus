@@ -1,0 +1,11 @@
+Package: emacs-bin-common
+Version: @DEB_EMACS_V@
+Architecture: @DEB_ARCH@
+Maintainer: @DEB_MAINTAINER@
+Depends: emacs-common (= @DEB_EMACS_V@), libx11-6, libxau6, libxmu6, libxpm-dev, libpng16-dev, libgif-dev, libtiff-dev, x11proto-dev, xxhash
+Section: Text_Editors
+Priority: optional
+Homepage: https://www.gnu.org/software/emacs/
+Description: GNU Emacs editor's shared, architecture dependent files.
+  GNU Emacs is the extensible, self-documenting text editor.
+  This package contains the architecture dependent infrastructure.

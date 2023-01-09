@@ -1,0 +1,11 @@
+Package: emacs-el
+Version: @DEB_EMACS_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Depends: emacs-common (= @DEB_EMACS_V@)
+Section: Text_Editors
+Priority: optional
+Homepage: https://www.gnu.org/software/emacs/
+Description: GNU Emacs LISP (.el) files.
+  This package contains the elisp sources for the convinience of
+  users, saving space in the main package for small systems.

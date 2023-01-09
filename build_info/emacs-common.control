@@ -1,0 +1,13 @@
+Package: emacs-common
+Version: @DEB_EMACS_V@
+Architecture: all
+Maintainer: @DEB_MAINTAINER@
+Conflicts: emacs (<< @DEB_EMACS_V@)
+Suggests: ncurses-term
+Recommends: emacs-el
+Section: Text_Editors
+Priority: optional
+Homepage: https://www.gnu.org/software/emacs/
+Description: GNU Emacs editor's shared, architecture independent infrastructure.
+ GNU Emacs is the extensible self-documenting text editor.
+ This package contains the architecture independent infrastructure.
