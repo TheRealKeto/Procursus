@@ -18,7 +18,7 @@ ifneq ($(wildcard $(BUILD_WORK)/emacs/.build_complete),)
 emacs:
 	@echo "Using previously built emacs."
 else
-emacs: emacs-setup jansson libxml2 libx11 libxau libxmu libxpm libpng16 libgif libtiff lcms2 xorgproto xxhash
+emacs: emacs-setup jansson gnutls libxml2 libx11 libxau libxmu libxpm libpng16 libgif libtiff lcms2 xorgproto xxhash
 	cd $(BUILD_WORK)/emacs/native-build && ../configure \
 		$(BUILD_CONFIGURE_FLAGS) \
 		--without-x \
@@ -44,13 +44,13 @@ emacs: emacs-setup jansson libxml2 libx11 libxau libxmu libxpm libpng16 libgif l
 		--without-cairo \
 		--without-gnutls \
 		--with-unexec=no \
-		--without-makeinfo \
 		--with-dumping=none \
 		--with-x-toolkit=no \
 		--without-libsystemd \
 		--without-compress-install \
 		--x-libraries="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
 		--x-includes="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
+		LIBGNUTLS_LIBS="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgnutls.dylib" \
 		gl_cv_func_open_slash=no \
 		gl_cv_func_working_utimes=yes \
 		ac_cv_func_getgroups_works=yes \
@@ -74,9 +74,7 @@ emacs-package: emacs-stage
 	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,libexec} $(BUILD_DIST)/emacs-bin-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
 
 	# emacs.mk Prep emacs-common
-	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{man,applications} $(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
-	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/icons $(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
-	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/metainfo $(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/metainfo
+	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{man,applications,icons,metainfo} $(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
 	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/info/efaq.info \
 		$(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/info
