@@ -66,22 +66,22 @@ endif
 
 emacs-package: emacs-stage
 	# emacs.mk Package Structure
-	rm -rf $(BUILD_DIST)/emacs{-el,-bin-common,-common}
-	mkdir -p $(BUILD_DIST)/emacs{-bin-common,-common}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
-		$(BUILD_DIST)/emacs-el/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/emacs/$(EMACS_VERSION) \
-		$(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{include,share/info}
+	rm -rf $(BUILD_DIST)/emacs{,-el,{,-bin}-common}
+	mkdir -p $(BUILD_DIST)/emacs-bin-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX) \
+		$(BUILD_DIST)/emacs-{el,common}/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/emacs/$(EMACS_VERSION) \
+		$(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
 
 	# emacs.mk Prep emacs-bin-common
 	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/{bin,libexec} $(BUILD_DIST)/emacs-bin-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
 
 	# emacs.mk Prep emacs-common
-	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{man,applications,icons,metainfo} $(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share
-	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include
-	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/info/efaq.info \
-		$(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/info
+	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include $(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/
+	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/{man,applications,icons,metainfo} $(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/
+	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/emacs/$(EMACS_VERSION)/{etc,site-lisp} $(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/emacs/$(EMACS_VERSION)/
+	$(LN_S) $(EMACS_VERSION)/site-lisp $(BUILD_DIST)/emacs-common/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/emacs/site-lisp
 
 	# emacs.mk Prep emacs-el
-	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/emacs/$(EMACS_VERSION)/lisp $(BUILD_DIST)/emacs-el/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/emacs/$(EMACS_VERSION)
+	cp -a $(BUILD_STAGE)/emacs/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/emacs/$(EMACS_VERSION)/lisp $(BUILD_DIST)/emacs-el/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/share/emacs/$(EMACS_VERSION)/
 
 	# emacs.mk Sign
 	$(call SIGN,emacs-bin-common,general.xml)
@@ -93,6 +93,6 @@ emacs-package: emacs-stage
 	$(call PACK,emacs-bin-common,DEB_EMACS_V)
 
 	# emacs.mk Build cleanup
-	rm -rf $(BUILD_DIST)/emacs{-el,-bin-common,-common}
+	rm -rf $(BUILD_DIST)/emacs{,-el,{,-bin}-common}
 
 .PHONY: emacs emacs-package
