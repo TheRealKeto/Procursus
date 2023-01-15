@@ -27,6 +27,7 @@ emacs: emacs-setup jansson gnutls libxml2 libx11 libxau libxmu libxpm libpng16 l
 		--with-modules \
 		--without-gnutls
 	+$(MAKE) -C $(BUILD_WORK)/emacs/native-build
+	sed -e "50s|/.*|/native-build/lib-src|" -i $(BUILD_WORK)/emacs/src/Makefile.in
 	cd $(BUILD_WORK)/emacs && ./configure -C \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-xpn \
