@@ -11,7 +11,9 @@ emacs-setup: setup
 	$(call PGP_VERIFY,emacs-$(EMACS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,emacs-$(EMACS_VERSION).tar.xz,emacs-$(EMACS_VERSION),emacs)
 	sed -e "71d" -i $(BUILD_WORK)/emacs/nextstep/Makefile.in
-	sed -e "250s|/.*|/lisp:../lisp|" -i $(BUILD_WORK)/emacs/Makefile.in
+	sed -e "9355s|gzip|zstd|" -i $(BUILD_WORK)/emacs/configure
+	sed -e "s|-9n|-19 --rm -q|g" -e "s|gz|zst|g" -i $(BUILD_WORK)/emacs/Makefile.in
+	sed -e "250s|/.*|/lisp:../lisp|" -e "720,722d" -i $(BUILD_WORK)/emacs/Makefile.in
 	mkdir -p $(BUILD_WORK)/emacs/native-build
 
 ifneq ($(wildcard $(BUILD_WORK)/emacs/.build_complete),)
@@ -49,7 +51,6 @@ emacs: emacs-setup jansson gnutls ncurses libxml2 libx11 libxau libxmu libxpm li
 		--with-dumping=none \
 		--with-x-toolkit=no \
 		--without-libsystemd \
-		--without-compress-install \
 		--x-libraries="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
 		--x-includes="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
 		LIBGNUTLS_LIBS="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgnutls.dylib" \
