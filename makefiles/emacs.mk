@@ -49,14 +49,14 @@ emacs: emacs-setup jansson gnutls ncurses libxml2 libx11 libxau libxmu libxpm li
 		--without-rsvg \
 		--with-pdumper \
 		--without-cairo \
-		--without-gnutls \
 		--with-unexec=no \
 		--with-dumping=none \
 		--with-x-toolkit=no \
 		--without-libsystemd \
 		--x-libraries="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib" \
 		--x-includes="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
-		LIBGNUTLS_LIBS="$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib/libgnutls.dylib" \
+		LIBGNUTLS_CFLAGS="-I$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/include" \
+		LIBGNUTLS_LIBS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lgnutls" \
 		gl_cv_func_open_slash=no \
 		gl_cv_func_working_utimes=yes \
 		ac_cv_func_getgroups_works=yes \
