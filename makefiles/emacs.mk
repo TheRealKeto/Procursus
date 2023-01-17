@@ -2,6 +2,9 @@ ifneq ($(PROCURSUS),1)
 $(error Use the main Makefile)
 endif
 
+# NOTE: Only builds on macOS
+# TODO: Compile App bundle for macOS
+
 SUBPROJECTS   += emacs
 EMACS_VERSION := 28.2
 DEB_EMACS_V   ?= $(EMACS_VERSION)
@@ -11,8 +14,8 @@ emacs-setup: setup
 	$(call PGP_VERIFY,emacs-$(EMACS_VERSION).tar.xz)
 	$(call EXTRACT_TAR,emacs-$(EMACS_VERSION).tar.xz,emacs-$(EMACS_VERSION),emacs)
 	sed -e "71d" -i $(BUILD_WORK)/emacs/nextstep/Makefile.in
-	sed -e "9355s|gzip|zstd|" -i $(BUILD_WORK)/emacs/configure
-	sed -e "s|-9n|-19 --rm -q|g" -e "s|gz|zst|g" -i $(BUILD_WORK)/emacs/Makefile.in
+	sed -e "9355s|gzip|$(MEMO_MANPAGE_COMPCMD)|" -i $(BUILD_WORK)/emacs/configure
+	sed -e "s|-9n|$(MEMO_MANPAGE_COMPFLGS) -q|g" -e "s|.gz|$(MEMO_MANPAGE_SUFFIX)|g" -i $(BUILD_WORK)/emacs/Makefile.in
 	sed -e "250s|/.*|/lisp:../lisp|" -e "720,722d" -i $(BUILD_WORK)/emacs/Makefile.in
 	mkdir -p $(BUILD_WORK)/emacs/native-build
 
