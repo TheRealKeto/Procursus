@@ -3,13 +3,12 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS  += mosh
-MOSH_VERSION := 1.3.2
-DEB_MOSH_V   ?= $(MOSH_VERSION)-5
+MOSH_VERSION := 1.4.0
+DEB_MOSH_V   ?= $(MOSH_VERSION)
 
 mosh-setup: setup
 	$(call DOWNLOAD_FILES,$(BUILD_SOURCE),https://mosh.org/mosh-$(MOSH_VERSION).tar.gz)
 	$(call EXTRACT_TAR,mosh-$(MOSH_VERSION).tar.gz,mosh-$(MOSH_VERSION),mosh)
-	$(call DO_PATCH,mosh,mosh,-p0)
 
 ifneq ($(wildcard $(BUILD_WORK)/mosh/.build_complete),)
 mosh:
