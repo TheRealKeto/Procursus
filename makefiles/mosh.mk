@@ -15,17 +15,17 @@ mosh:
 	@echo "Using previously built mosh."
 else
 mosh: mosh-setup libprotobuf openssl ncurses
-	cd $(BUILD_WORK)/mosh && ./autogen.sh
 	cd $(BUILD_WORK)/mosh && ./configure \
 		$(DEFAULT_CONFIGURE_FLAGS) \
 		--with-ncursesw \
 		--with-crypto-library=openssl \
 		--enable-completion \
+		CXX="$(CXX) -std=c++11" \
+		PROTOC="$(command -v protoc)" \
 		TINFO_LIBS="-L$(BUILD_BASE)$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/lib -lncursesw"
-	+$(MAKE) -C $(BUILD_WORK)/mosh \
-		CXX="$(CXX) -std=c++11"
+	+$(MAKE) -C $(BUILD_WORK)/mosh
 	+$(MAKE) -C $(BUILD_WORK)/mosh install \
-		DESTDIR=$(BUILD_STAGE)/mosh
+		DESTDIR="$(BUILD_STAGE)/mosh"
 	$(call AFTER_BUILD)
 endif
 
