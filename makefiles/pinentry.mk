@@ -9,6 +9,7 @@ DEB_PINENTRY_V   ?= $(PINENTRY_VERSION)
 pinentry-setup: setup
 	$(call GITHUB_ARCHIVE,GPGTools,pinentry,$(PINENTRY_VERSION),v$(PINENTRY_VERSION))
 	$(call EXTRACT_TAR,pinentry-$(PINENTRY_VERSION).tar.gz,pinentry-$(PINENTRY_VERSION),pinentry)
+	mkdir -p $(BUILD_STAGE)/pinentry/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/Applications
 
 ifneq ($(wildcard $(BUILD_WORK)/pinentry/.build_complete),)
 pinentry:
@@ -24,9 +25,12 @@ pinentry: pinentry-setup libgpg-error libassuan ncurses
 		--enable-pinentry-ncurses \
 		--enable-maintainer-mode \
 		NCURSES_CFLAGS="-DNCURSES_WIDECHAR"
+	sed -i "421s|.*|pinentry_macosx = macosx|" $(BUILD_WORK)/pinentry/Makefile
 	+$(MAKE) -C $(BUILD_WORK)/pinentry
 	+$(MAKE) -C $(BUILD_WORK)/pinentry install \
 		DESTDIR="$(BUILD_STAGE)/pinentry"
+	cp -a $(BUILD_WORK)/pinentry/macosx/pinentry-mac.app $(BUILD_STAGE)/pinentry/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/Applications
+	$(INSTALL) -Dm755 $(BUILD_MISC)/pinentry/pinentry-mac $(BUILD_STAGE)/pinentry/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
 	$(call AFTER_BUILD)
 endif
 
