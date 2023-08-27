@@ -25,12 +25,17 @@ pinentry: pinentry-setup libgpg-error libassuan ncurses
 		--enable-pinentry-ncurses \
 		--enable-maintainer-mode \
 		NCURSES_CFLAGS="-DNCURSES_WIDECHAR"
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
 	sed -i "421s|.*|pinentry_macosx = macosx|" $(BUILD_WORK)/pinentry/Makefile
+endif
 	+$(MAKE) -C $(BUILD_WORK)/pinentry
 	+$(MAKE) -C $(BUILD_WORK)/pinentry install \
 		DESTDIR="$(BUILD_STAGE)/pinentry"
-	cp -a $(BUILD_WORK)/pinentry/macosx/pinentry-mac.app $(BUILD_STAGE)/pinentry/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/libexec/Applications
-	$(INSTALL) -Dm755 $(BUILD_MISC)/pinentry/pinentry-mac $(BUILD_STAGE)/pinentry/$(MEMO_PREFIX)$(MEMO_SUB_PREFIX)/bin
+ifneq (,$(findstring darwin,$(MEMO_TARGET)))
+	cp -a $(BUILD_WORK)/pinentry/macosx/pinentry-mac.app $(BUILD_STAGE)/pinentry/$(MEMO_PREFIX)/libexec/Applications
+	$(INSTALL) -Dm755 $(BUILD_MISC)/pinentry/pinentry-mac $(BUILD_STAGE)/pinentry/$(MEMO_PREFIX)/bin
+	sed -i "s|@MEMO_PREFIX@|$(MEMO_PREFIX)|g" $(BUILD_STAGE)/pinentry/$(MEMO_PREFIX)/bin/pinentry-mac
+endif
 	$(call AFTER_BUILD)
 endif
 

@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec "@MEMO_PREFIX@/libexec/Applications/pinentry-mac.app/Contents/MacOS/pinentry-mac" $@
