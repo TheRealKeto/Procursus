@@ -3,6 +3,7 @@ Version: @DEB_LSD_V@
 Architecture: @DEB_ARCH@
 Maintainer: @DEB_MAINTAINER@
 Author: Pierre Peltier <dev@halium.fr>
+Depends: libgit2-1.5
 Section: Utilities
 Priority: optional
 Homepage: https://github.com/Peltoche/lsd

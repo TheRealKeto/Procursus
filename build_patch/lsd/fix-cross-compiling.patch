@@ -1,0 +1,30 @@
+Fix cross compiling and iOS support
+
+The git2-rs maintainers do not understand the difference
+between ABI changes and API changes and ruin our system
+library linking. This forces us (Procursus Team) to patch
+their mistake on every project depending on their work.
+
+On top of that, all projects depending on the git2 crate
+require a different version of the users crate that adds
+support for iOS, or else the build fails.
+
+See the link below for more info.
+https://github.com/rust-lang/git2-rs/pull/859
+=================================================
+diff -urN a/Cargo.toml b/Cargo.toml
+--- a/Cargo.toml	2023-08-25 12:44:13.000000000 -0400
++++ b/Cargo.toml	2023-09-03 00:22:16.000000000 -0400
+@@ -45,10 +45,10 @@
+ 
+ [target."cfg(not(all(windows, target_arch = \"x86\", target_env = \"gnu\")))".dependencies]
+ # if ssl feature is enabled compilation will fail on arm-unknown-linux-gnueabihf and i686-pc-windows-gnu
+-git2 = { version = "0.16", optional = true, default-features = false }
++git2 = { git = "https://github.com/Teutates/git2-rs", optional = true, default-features = false }
+ 
+ [target.'cfg(unix)'.dependencies]
+-users = "0.11.*"
++users = { git = "https://github.com/ogham/rust-users", rev = "refs/pull/46/head" }
+ xattr = "0.2.*"
+ 
+ [target.'cfg(windows)'.dependencies]

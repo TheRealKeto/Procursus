@@ -9,14 +9,13 @@ DEB_LSD_V   ?= $(LSD_VERSION)
 lsd-setup: setup
 	$(call GITHUB_ARCHIVE,Peltoche,lsd,$(LSD_VERSION),v$(LSD_VERSION))
 	$(call EXTRACT_TAR,lsd-$(LSD_VERSION).tar.gz,lsd-$(LSD_VERSION),lsd)
+	$(call DO_PATCH,lsd,lsd,-p1)
 
 ifneq ($(wildcard $(BUILD_WORK)/lsd/.build_complete),)
 lsd:
 	@echo "Using previously built lsd."
 else
-lsd: lsd-setup
-	sed -i -e 's|users = "0.11.*"|users = {git = "https://github.com/ogham/rust-users", rev = "refs/pull/46/head"}|g' \
-		$(BUILD_WORK)/lsd/Cargo.toml
+lsd: lsd-setup libgit2
 	cd $(BUILD_WORK)/lsd && $(DEFAULT_RUST_FLAGS) cargo build \
 		--release \
 		--target=$(RUST_TARGET)
