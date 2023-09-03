@@ -3,11 +3,11 @@ $(error Use the main Makefile)
 endif
 
 SUBPROJECTS += lsd
-LSD_VERSION := 0.23.1
+LSD_VERSION := 1.0.0
 DEB_LSD_V   ?= $(LSD_VERSION)
 
 lsd-setup: setup
-	$(call GITHUB_ARCHIVE,Peltoche,lsd,$(LSD_VERSION),$(LSD_VERSION))
+	$(call GITHUB_ARCHIVE,Peltoche,lsd,$(LSD_VERSION),v$(LSD_VERSION))
 	$(call EXTRACT_TAR,lsd-$(LSD_VERSION).tar.gz,lsd-$(LSD_VERSION),lsd)
 
 ifneq ($(wildcard $(BUILD_WORK)/lsd/.build_complete),)
